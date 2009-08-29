@@ -1,0 +1,27 @@
+#summary One-sentence summary of this page.
+
+= კონფიგურაცია =
+
+{{{
+C:\\Data\\geoinput\\config.cfg
+}}}
+
+ვერსია ციფრული კლავიატურის მქონე ტელეფონებისთვის
+{{{
+hidden = 0,
+kaonstart = 0,
+noteSwitch = 1,
+simplemenu  = 0,
+exceptions  = {}
+}}}
+
+ვერსია qwerty კლავიატურის მქონე ტელეფონებისთვის
+{{{
+hidden = 0,
+kaonstart = 0,
+noteSwitch = 1,
+simplemenu  = 0,
+exceptions  = {}
+keymapKbdExt = {}
+switcherkey = 'q'
+}}}
