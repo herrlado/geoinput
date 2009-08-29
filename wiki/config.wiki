@@ -8,7 +8,7 @@ C:\\Data\\geoinput\\config.cfg
 
 ვერსია ციფრული კლავიატურის მქონე ტელეფონებისთვის
 {{{
-hidden = 0,
+hidden] = 0,
 kaonstart = 0,
 noteSwitch = 1,
 simplemenu  = 0,
