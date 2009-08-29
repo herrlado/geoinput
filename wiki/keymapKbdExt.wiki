@@ -1,0 +1,22 @@
+#summary One-sentence summary of this page.
+
+= E63 / E71 დამატებითი სიმბოლოები =
+შესაძლებელია დაემატოს დამატებითი სიმბოლოები რომლებიც კლავიშის დროულად ხელმეორე დაწოლით დაიწერება
+
+მაგ. 
+
+{{{
+ keymapKbdExt={'q':'!', 'w':'"', 'e':'+', 'i':'?', 'a':'%', 's':"'", 'k':'-', 'l':'='}
+}}}
+
+{{{
+keymapKbdExt={'q':'!', 'w':'ჭ', 'e':'+', 'i':'?', 'o':'ღ', 'p':'თ', 'a':'%', 's':'შ','k':'-', 'l':'=', 'z':'ძ', 'x':'ჟ', 'c':'ჩ',}
+}}} 
+©attool
+
+= Details =
+
+Add your content here.  Format your content with:
+  * Text in *bold* or _italic_
+  * Headings, paragraphs, and lists
+  * Automatic links to other wiki pages
