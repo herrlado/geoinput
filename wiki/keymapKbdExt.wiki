@@ -14,6 +14,9 @@ keymapKbdExt={'q':'!', 'w':'ჭ', 'e':'+', 'i':'?', 'o':'ღ', 'p':'თ', 'a':'%
 }}} 
 ©attool
 
+ამ ყველაფერ ვწერთ [http://code.google.com/p/geoinput/w/edit/config კონფიგ ფაილში]
+
+
 = Details =
 
 Add your content here.  Format your content with:
