@@ -56,7 +56,7 @@ class geoinputbase(object):
         self.lastKey = 0
         self.mod = 0
         self.lastClickAt = 0
-        self.currentLang = u'ka'
+        self.currentLang = u'ru'
 
 
 
@@ -162,7 +162,7 @@ class geoinputbase(object):
         hidden = self.c('hidden')
         noteSwitch = self.c('noteSwitch')
         simplemenu = self.c('simplemenu')
-        return [(u("ავტო ქარ."), "combo", (INDICATOR, kaonstart)),
+        return [(u("ავტო ენა"), "combo", (INDICATOR, kaonstart)),
             (u("დამალვა"), "combo", (INDICATOR, hidden)),
             (u("ინდიკატორი"), "combo", (INDICATOR, noteSwitch)),
             (u("მარტივი მენუ"),"combo", (INDICATOR, simplemenu))
@@ -413,17 +413,17 @@ class geoinputbase(object):
     def toggleMenu(self):
         l = []
         if self.currentLang == u'ka':
-            l.append(u('ქართული *'))
+            l.append(u('რუსული *'))
             l.append(u'default')
         else:
-            l.append(u('ქართული'))
+            l.append(u('რუსული'))
             l.append(u'default *')
         items = appuifw.popup_menu(l)
 
         if items == None:
             return
         if items == 0: #ქარ
-            if self.currentLang == u'ka':
+            if self.currentLang == u'ru':
                 return
             self.toggle()
         else:
