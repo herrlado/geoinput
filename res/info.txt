@@ -1,6 +1,5 @@
-geoinput for PyS60
-supported currently only 3rd edition!
-version 1.2.7 by Lado Kumsiashvili (c) 2009
+geoinput-rus for Nokia N97
+version 0.0.3 by Lado Kumsiashvili (c) 2009
 herrlado@gmail.com
 
 This program is free software; you can redistribute it and/or modify
