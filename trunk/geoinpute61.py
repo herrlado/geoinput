@@ -24,11 +24,18 @@ from geoinputbase import geoinputbase
 import keycapture
 from keypress import simulate_key
 from keycapture import KeyCapturer
+from key_codes import EKeyBackspace, EScancodeBackspace, EModifierCtrl
+from utils import u
 
-
-class geoinputkbd(geoinputbase):
+class geoinpute61(geoinputbase):
     def __init__(self):
         geoinputbase.__init__(self)
+
+    def extend(self, a, b):
+        tmp = list(self.keymapkbd[ord(a)])
+        tmp.append(ord(u(b)))
+        #print str(tmp)
+        self.keymapkbd[ord(a)] = tuple(tmp)
 
     def init(self):
         geoinputbase.init(self)
@@ -38,24 +45,44 @@ class geoinputkbd(geoinputbase):
         self.keymapkbd = {}
         self.switcherFirsKeyLastClickAt = 0
         self.switcherKey = 17
-        for i in range(0,len("a85de73Tikl90opJrs2*fqRySCcZwWx#6")):
-            self.keymapkbd[ord("a85de73Tikl90opJrs2*fqRySCcZwWx#6"[i])] = i + 4304
-        # for i in range(0,len("abgdevzTiklmnopJrstufqRySCcZwWxjh")):
-        #     self.keymapkbd[ord("abgdevzTiklmnopJrstufqRySCcZwWxjh"[i])] = i + 4304
-        self.number_keys = {
-                'r':'1', 'R':'1', 't':'2','T':'2', 'y':'3',
-                'u':'*','f':'4','g':'5','h':'6','j':'#',
-                'v':'7', 'b':'8','n':'9','m':'0'
-        }
+        for i in range(0,len("a85de7zTikl09opJ1s2*4qR3SCcZwWx#6")):
+            self.keymapkbd[ord("a85de7zTikl09opJ1s2*4qR3SCcZwWx#6"[i])] = tuple([i + 4304])
+        self.extend('s','შ')
+        self.extend('w','ჭ')
 
-        number_keys2 = {}
-        for key,value in self.number_keys.items():
-            number_keys2[ord(key)] = ord(value.decode('utf-8'))
-        self.number_keys = number_keys2
-        self.number_keys2 = None
-        self.number_keys_home_ignore =  self.number_keys.keys()
+        self.extend('1','ღ')
+        self.extend('1','1')
+        self.extend('2','თ')
+        self.extend('2','2')
+        self.extend('3','3')
+        self.extend('*','*')
+        self.extend('4','4')
+        self.extend('5','5')
+        self.extend('6','6')
+        self.extend('#','ჟ')
+        self.extend('#','#')
+        self.extend('7','7')
+        self.extend('8','8')
+        self.extend('9','9')
+        self.extend('0','0')
+        self.extend('z','ძ')
+        self.extend('c','ჩ')
+
+        # self.number_keys = {
+        #         'r':'1', 'R':'1', 't':'2','T':'2', 'y':'3',
+        #         'u':'*','f':'4','g':'5','h':'6','j':'#',
+        #         'v':'7', 'b':'8','n':'9','m':'0'
+        #}
+
+        # number_keys2 = {}
+        # for key,value in self.number_keys.items():
+        #     number_keys2[ord(key)] = ord(value.decode('utf-8'))
+        # self.number_keys = number_keys2
+        # self.number_keys2 = None
+        # self.number_keys_home_ignore =  self.number_keys.keys()
         #self.number_keys_home_ignore = [ord('r'), ord('R'), ord('t'), ord('T'), ord('y'), ord('u'), ord('f'), ord('g'), ord('h'), ord('j'), ord('v'), ord('b'), ord('n'), ord('m')]
         #self.number_keys_home_ignore = [ord('2'), ord('R'), ord('t'), ord('T'), ord('y'), ord('u'), ord('f'), ord('g'), ord('h'), ord('j'), ord('v'), ord('b'), ord('n'), ord('m')]
+
 
 
     # # #
@@ -74,9 +101,9 @@ class geoinputkbd(geoinputbase):
                 d = {}
                 for key,value in self.config['keymapKbdExt'].items():
                     d[ord(key)] = ord(value.decode('utf-8'))
-                    for key, value in d.items():
-                        if key not in self.number_keys:
-                            self.number_keys[key] = value
+                    #for key, value in d.items():
+                        # if key not in self.number_keys:
+                        #     self.number_keys[key] = value
         except:
             self.printStackTrace()
         try:
@@ -88,44 +115,49 @@ class geoinputkbd(geoinputbase):
             self.switcherKey = 17 #q
             self.printStackTrace()
 
+    def getSimKey(self, key):
+        key_tuple = self.keymapkbd[key]
+        sim_key = key_tuple[self.mod]
+        key_tuple_len = len(key_tuple)
+        if self.mod + 1 == key_tuple_len or key_tuple_len == 1:
+            self.lastKey = 0
+            self.mod = 0
+        else:
+            self.lastKey = key
+            self.mod = (self.mod + 1)  % key_tuple_len
+        return sim_key
+
+
     def mainCallBack(self, key):
+        if key not in self.keymapkbd:
+            return
         if self.isExceptionInFg():
             self.mainCapturer.stop()
-            simulate_key(key,key)
+            simulate_key(key, key)
             self.mainCapturer.start()
-
-        if key not in self.number_keys:
-            if key not in self.keymapkbd:
-                return
-            sim_key = self.keymapkbd[key]
-            simulate_key(sim_key, sim_key)
             return
-        reverse = self.isExceptionInFg() #False
-        if key not in self.number_keys_home_ignore:
-            reverse = False
         self.checkTime()
         if self.lastKey == key :
             self.backspaceCapturer.stop() # we must stop backspace, because the next call is a "dummy backSpace" to remove a digit in-place
-            simulate_key(8,8)
-            if reverse:
-                sim_key = self.keymapkbd[key]
-            else:
-                sim_key = self.number_keys[key]
-            simulate_key(sim_key, sim_key)
+            sim_key = self.getSimKey(key) #self.keymap[key][mod]
+            if sim_key == key : # got number, we need special handling
+                self.mainCapturer.stop()  # commonCapturer must not capture next fired keyKode.
+                simulate_key(EKeyBackspace, EScancodeBackspace)
+                simulate_key(key, 0, EModifierCtrl) # send number code
+                self.mainCapturer.start()
+            else : # usuall handling
+                simulate_key(EKeyBackspace, EScancodeBackspace)
+                simulate_key(sim_key, sim_key)
             self.backspaceCapturer.start() # enable backspace forwarding
-            self.lastKey = 0
         else:
-            if reverse:
-                sim_key = self.number_keys[key]
-            else:
-                sim_key = self.keymapkbd[key]
+            self.mod = 0
+            sim_key = self.getSimKey(key)
             simulate_key(sim_key, sim_key)
-            self.lastKey = key
-
 
     def initMainCapturer(self):
         geoinputbase.initMainCapturer(self)
         self.mainCapturer = KeyCapturer(self.mainCallBack)
+        #print str(self.keymapkbd.keys())
         self.mainCapturer.keys = tuple(self.keymapkbd.keys())
         self.mainCapturer.start()
         self.initSwitcherCapturers()
@@ -159,12 +191,13 @@ class geoinputkbd(geoinputbase):
     #     del self.switcherCapturer
 
     def switcherCallBack(self,key):#####
-        now = self.now()
-        timeDiff =  now - self.switcherFirsKeyLastClickAt
-        self.switcherFirsKeyLastClickAt = now
-        if timeDiff > 0.33:
-            return
-        self.toggle()
+        # now = self.now()
+        # timeDiff =  now - self.switcherFirsKeyLastClickAt
+        # self.switcherFirsKeyLastClickAt = now
+        # if timeDiff > 0.33:
+        #     return
+        if key == self.switcherKey:
+            self.toggle()
 
 
     def initSwitcherCapturers(self):#####

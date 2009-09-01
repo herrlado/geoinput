@@ -7,8 +7,8 @@ try:
     fw = getFW()
     print fw
     if fw in KBD_E61_V:
-        from geoinputkbd import geoinputkbd
-        g = geoinputkbd()
+        from geoinpute61 import geoinpute61
+        g = geoinpute61()
     elif fw in KBD_V:
         from geoinputkbd import geoinputkbd
         g = geoinputkbd()
@@ -22,6 +22,7 @@ try:
         from geoinput import geoinput
         g = geoinput()
 except:
+
     from geoinput import geoinput
     g = geoinput()
 try:
