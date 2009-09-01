@@ -1,5 +1,5 @@
 #!/bin/bash
-VERSION="1.2.2"
+VERSION="1.2.4"
 # make distro
 rm -rf build
 mkdir -p build
@@ -17,7 +17,7 @@ cp -v versions.py build/
 cp -v utils.py build/
 cp -v res/manual.html build/
 TARGET=geoinput-$VERSION.sis
-MERGED_TARGET=geoinput-122.sis
+MERGED_TARGET=geoinput-124.sis
 # create sis-filex
 #ensymble.py py2sis --uid=0xe3e34da2 --appname="geinput" --shortcaption="geoinput" --version=$VERSION --vendor="Lado Kumsiashvili" --verbose build geoinput-${VERSION}.sis
 ensymble.py py2sis --textfile=res/info.txt --vendor="Lado Kumsiashvili" --appname="geoinput" --uid=0x20027ad1 --caps=SwEvent --verbose --icon=res/geo_flag.svgt --version=$VERSION build sis/$TARGET
