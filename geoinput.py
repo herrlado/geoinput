@@ -35,7 +35,7 @@ class geoinput(geoinputbase):
 
     def init(self):
         geoinputbase.init(self)
-        self.log("geoinput")
+        #self.log("geoinput")
         self.mainCapturer     = None  #main caputurer
         self.switcherCapturer = None
         self.switcherFirstClickCapturer = None
