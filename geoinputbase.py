@@ -33,7 +33,7 @@ from versions import *
 
 UID = "20027ad2"
 
-APPVERSION = u'0.0.1'
+APPVERSION = u'0.0.3'
 
 APPNAME = u"geoinput-rus"
 
