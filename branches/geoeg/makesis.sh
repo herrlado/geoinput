@@ -1,5 +1,5 @@
 #!/bin/bash
-VERSION="0.0.3"
+VERSION="0.0.4"
 # make distro
 rm -rf build
 mkdir -p build
@@ -14,9 +14,9 @@ cp -v versions.py build/
 cp -v utils.py build/
 cp -v res/manual.html build/
 TARGET=geoinput-rus-$VERSION.sis
-MERGED_TARGET=geoinput-rus-003.sis
+MERGED_TARGET=geoinput-rus-004.sis
 # create sis-filex
 #ensymble.py py2sis --uid=0xe3e34da2 --appname="geinput" --shortcaption="geoinput" --version=$VERSION --vendor="Lado Kumsiashvili" --verbose build geoinput-${VERSION}.sis
-ensymble.py py2sis --textfile=res/info.txt --vendor="Lado Kumsiashvili" --appname="geoinput" --uid=0x20027ad2 --caps=SwEvent --verbose --icon=res/ru_flag.svg --version=$VERSION build sis/$TARGET
+ensymble.py py2sis --textfile=res/info.txt --vendor="Lado Kumsiashvili" --appname="geoinput-rus" --uid=0x20027ad2 --caps=SwEvent --verbose --icon=res/ru_flag.svg --version=$VERSION build sis/$TARGET
 ensymble.py mergesis sis/$TARGET libs/envy-1.0.4.sis libs/keypress-1.0.6.sis libs/appswitch-1.0.3.sis libs/applist-1.0.0.sis sis/$MERGED_TARGET
 rm -rf build
