@@ -1,0 +1,59 @@
+geoinput
+Nokia 3250
+Nokia 5500
+Nokia E50
+Nokia E60
+Nokia E65
+Nokia N71
+Nokia N73
+Nokia N75
+Nokia N77
+Nokia N80
+Nokia N91
+Nokia N92
+Nokia N93
+Nokia N95
+Nokia N76
+Nokia N82
+Nokia N81
+Nokia E66
+Nokia E51
+Nokia 6290
+Nokia 6121 classic
+Nokia 6120 classic
+Nokia 6110 Navigator
+Nokia 5700 XpressMusic
+Nokia 6124 classic
+Nokia 5320 XpressMusic
+Nokia 5630 XpressMusic
+Nokia 6220 classic
+Nokia 6210 Navigator
+Nokia 6650 (nur bei T-Mobile)
+Nokia 6720 classic
+Nokia 6730 classic (nur bei vodafone)
+Nokia 6710 Navigator
+Nokia E52
+Nokia E55
+Nokia N78
+Nokia N79
+Nokia N85
+Nokia N86
+Nokia N90       RM-42
+Nokia N96
+
+geoinputkbd
+Nokia E61 RM-89, RM-227, RM-294
+Nokia E71       RM-346, RM-357, RM-407,         RM-493,         RM-462
+Nokia E63       RM-437, RM-449, RM-450
+Nokia E72  RM-530, RM-529
+
+
+geoinpute90
+Nokia E70       RM-10,	RM-24
+Nokia E75       RM-412, RM-413
+
+
+geoinpitslider
+Nokia N97
+Nokia E75      RM-412, RM-413
+Nokia 5730 XpressMusic RM-465,RM-468
