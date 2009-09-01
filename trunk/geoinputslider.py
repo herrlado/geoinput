@@ -44,7 +44,7 @@ class geoinputslider(geoinput):
         self.inputmode = 0
         self.keymapkbd = {}
         self.switcherKey  = ord(' ')
-        self.numbers = range(48,58)
+        self.numbers = range(48, 58)
         self.numbers.append(ord('*'))
         self.numbers.append(ord('#'))
         for i in range(0,len("abgdevzTiklmnopJrstufqRySCcZwWxjh")):
@@ -129,7 +129,7 @@ class geoinputslider(geoinput):
                 simulate_key(EKeyBackspace, EScancodeBackspace)
                 simulate_key(key, key)
                 self.mainCapturerKbd.start()
-            elif sim_key in range(48,58):
+            elif sim_key in self.numbers:
                 simulate_key(EKeyBackspace, EScancodeBackspace)
                 simulate_key(sim_key, 0, EModifierCtrl) # send number code
             else : # usuall handling
