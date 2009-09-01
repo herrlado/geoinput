@@ -29,7 +29,7 @@ from keycapture import KeyCapturer
 class geoinputkbd(geoinputbase):
     def __init__(self):
         geoinputbase.__init__(self)
-
+        
     def init(self):
         geoinputbase.init(self)
         self.mainCapturer = None

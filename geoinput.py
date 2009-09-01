@@ -78,13 +78,14 @@ class geoinput(geoinputbase):
         self.checkTime()
         if self.lastKey == key :
             self.backspaceCapturer.stop() # we must stop backspace, because the next call is a "dummy backSpace" to remove a digit in-place
-            simulate_key(EKeyBackspace, EScancodeBackspace)
             sim_key = self.getSimKey(key) #self.keymap[key][mod]
             if sim_key == key : # got number, we need special handling
                 self.mainCapturer.stop()  # commonCapturer must not capture next fired keyKode.
+                simulate_key(EKeyBackspace, EScancodeBackspace)
                 simulate_key(key, 0, EModifierCtrl) # send number code
                 self.mainCapturer.start()
             else : # usuall handling
+                simulate_key(EKeyBackspace, EScancodeBackspace)
                 simulate_key(sim_key, sim_key)
             self.backspaceCapturer.start() # enable backspace forwarding
         else:

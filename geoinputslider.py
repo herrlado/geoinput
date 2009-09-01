@@ -26,7 +26,7 @@ import keycapture
 from keypress import simulate_key
 from keycapture import KeyCapturer
 from utils import *
-from key_codes import EKeyHash, EScancodeHash
+from key_codes import EKeyHash, EScancodeHash, EKeyBackspace, EScancodeBackspace,EModifierCtrl
 import e32
 
 
@@ -42,16 +42,37 @@ class geoinputslider(geoinput):
         self.currentLangKbd = u"default"
         self.inputmode = 0
         self.keymapkbd = {}
-        for i in range(0,len("abgdevzTiklmnopJrstufqRySCcZwWxjh")):
-            self.keymapkbd[ord("abgdevzTiklmnopJrstufqRySCcZwWxjh"[i])] = i + 4304
-        self.number_keys = {'q':'1', 'Q':'1', 'w':'2','W':'2','e':'3', 'r':'4','R':'4', 't':'5','T':'5','y':'6','Y':'6','u':'7','i':'8','o':'9','p':'0','g':'*','h':'#'}
-        number_keys2 = {}
-        for key,value in self.number_keys.items():
-            number_keys2[ord(key)] = ord(value.decode('utf-8'))
-        self.number_keys = number_keys2
-        self.number_keys2 = None
-        self.number_keys_home_ignore = self.number_keys.keys()
         self.switcherKey  = ord(' ')
+        for i in range(0,len("abgd3vzT8klmn90J4s57f1R6SCcZ2Wx*#")):
+            self.keymapkbd[ord("abgd3vzT8klmn90J4s57f1R6SCcZ2Wx*#"[i])] = tuple([i + 4304])
+
+
+        self.extend('1','1')
+        self.extend('2','ჭ')
+        self.extend('2','2')
+        self.extend('3','3')
+        self.extend('4','ღ')
+        self.extend('4','4')
+        self.extend('5','თ')
+        self.extend('5','5')
+        self.extend('6','6')
+        self.extend('7','7')
+        self.extend('8','8')
+        self.extend('9','9')
+        self.extend('0','0')
+
+        self.extend('*','*')
+        self.extend('#','ჟ')
+        self.extend('#','#')
+        self.extend('s','შ')
+        self.extend('z','ძ')
+        self.extend('c','ჩ')
+
+    def extend(self, a, b):
+        tmp = list(self.keymapkbd[ord(a)])
+        tmp.append(ord(u(b)))
+        #print str(tmp)
+        self.keymapkbd[ord(a)] = tuple(tmp)
 
     # # #
     def getDefaultConfig(self):
@@ -68,39 +89,50 @@ class geoinputslider(geoinput):
                 d = {}
                 for key,value in self.config['keymapKbdExt'].items():
                     d[ord(key)] = ord(value.decode('utf-8'))
-                    for key, value in d.items():
-                        if key not in self.number_keys:
-                            self.number_keys[key] = value
+                    #for key, value in d.items():
+                        #if key not in self.number_keys:
+                            #self.number_keys[key] = value
         except:
             self.printStackTrace()
 
+    def getSimKeyKbd(self, key):
+        key_tuple = self.keymapkbd[key]
+        sim_key = key_tuple[self.mod]
+        key_tuple_len = len(key_tuple)
+        if self.mod + 1 == key_tuple_len or key_tuple_len == 1:
+            self.lastKey = 0
+            self.mod = 0
+        else:
+            self.lastKey = key
+            self.mod = (self.mod + 1)  % key_tuple_len
+        return sim_key
+
 
     def mainCallBackKbd(self, key):
-        if key not in self.number_keys:
-            sim_key = self.keymapkbd[key]
-            simulate_key(sim_key, sim_key)
+        if key not in self.keymapkbd:
             return
-        reverse = self.isExceptionInFg() #False
-        if key not in self.number_keys_home_ignore:
-            reverse = False
+        if self.isExceptionInFg():
+            self.mainCapturerKbd.stop()
+            simulate_key(key, key)
+            self.mainCapturerKbd.start()
+            return
         self.checkTime()
         if self.lastKey == key :
             self.backspaceCapturer.stop() # we must stop backspace, because the next call is a "dummy backSpace" to remove a digit in-place
-            simulate_key(8,8)
-            if reverse:
-                sim_key = self.keymapkbd[key]
-            else:
-                sim_key = self.number_keys[key]
-            simulate_key(sim_key, sim_key)
+            sim_key = self.getSimKeyKbd(key) #self.keymap[key][mod]
+            if sim_key == key : # got number, we need special handling
+                self.mainCapturerKbd.stop()  # commonCapturer must not capture next fired keyKode.
+                simulate_key(EKeyBackspace, EScancodeBackspace)
+                simulate_key(key, 0, EModifierCtrl) # send number code
+                self.mainCapturerKbd.start()
+            else : # usuall handling
+                simulate_key(EKeyBackspace, EScancodeBackspace)
+                simulate_key(sim_key, sim_key)
             self.backspaceCapturer.start() # enable backspace forwarding
-            self.lastKey = 0
         else:
-            if reverse:
-                sim_key = self.number_keys[key]
-            else:
-                sim_key = self.keymapkbd[key]
+            self.mod = 0
+            sim_key = self.getSimKeyKbd(key)
             simulate_key(sim_key, sim_key)
-            self.lastKey = key
 
 
     # def initMainCapturer(self):
@@ -180,11 +212,16 @@ class geoinputslider(geoinput):
     def stopKbd(self):
         self.mainCapturerKbd.stop()
         self.currentLangKbd = u"default"
+        self.lastKey = 0
+        self.mod = 0
+
 
     def startKbd(self):
         geoinput.stop(self)
         self.mainCapturerKbd.start()
         self.currentLangKbd = u"ka"
+        self.lastKey = 0
+        self.mod = 0
 
     def toggleKbd(self):
         simulate_key(8,8)

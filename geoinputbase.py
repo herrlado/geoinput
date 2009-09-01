@@ -325,7 +325,6 @@ class geoinputbase(object):
                 return True
             conf(u("default"))
             e32.ao_sleep(0.2)
-            simulate_key(EKeyHash, EScancodeHash)
         else:
             self.start()
             self.currentLang = u'ka'
@@ -333,7 +332,6 @@ class geoinputbase(object):
                 return True
             conf(u('ქართული'))
             e32.ao_sleep(0.2)
-            simulate_key(EKeyHash, EScancodeHash)
             return True
 
 
@@ -456,7 +454,7 @@ class geoinputbase(object):
 
         appswitch.switch_to_bg(APPNAME)
 
-        #appuifw.app.body = appuifw.Text()
+        appuifw.app.body = appuifw.Text()
 
         appuifw.app.menu = self.createMenu()
 
