@@ -31,11 +31,11 @@ import os
 from utils import *
 from versions import *
 
-UID = "20027ad1"
+UID = "20027ad2"
 
-APPVERSION = u'1.1.5'
+APPVERSION = u'0.0.1'
 
-APPNAME = u"geoinput"
+APPNAME = u"geoinput-rus"
 
 
 ###

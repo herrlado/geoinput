@@ -16,7 +16,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 #
 import appuifw
-UID = "20027ad1"
+UID = "20027ad2"
 if appuifw.app.uid() != UID:
     import sys
     sys.path.append("C:\\Data\\geoinput")
