@@ -40,6 +40,7 @@ class geoinputslider(geoinput):
         self.mainCapturerKbd = None
         self.switcherCapturerKbd = None
         self.currentLangKbd = u"default"
+        self.switcherFirsKeyLastClickKbdAt = 0
         self.inputmode = 0
         self.keymapkbd = {}
         self.switcherKey  = ord(' ')
@@ -208,11 +209,11 @@ class geoinputslider(geoinput):
     def switcherCapturerKbdCallBack(self, key):
         if key == self.switcherKey:
             now = self.now()
-            timeDiff =  now - self.switcherFirsKeyLastClickAt
-            self.switcherFirsKeyLastClickAt = now
+            timeDiff =  now - self.switcherFirsKeyLastClickKbdAt
+            self.switcherFirsKeyLastClickKbdAt = now
             if timeDiff > 0.33:
                 return
-            self.switcherFirsKeyLastClickAt =  0
+            self.switcherFirsKeyLastClickKbdAt =  0
             self.toggleKbd()
 
     def stopKbd(self):
