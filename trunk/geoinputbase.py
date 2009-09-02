@@ -284,6 +284,8 @@ class geoinputbase(object):
         if key not in self.config:
             return self.getDefaultConfig()[key]
         value = 0
+        if type(self.config[key]) is not int:
+            return self.config[key]
         if self.config[key] > 0:
             return 1
         return value

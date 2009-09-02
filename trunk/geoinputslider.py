@@ -73,30 +73,58 @@ class geoinputslider(geoinput):
         self.extend('z','ძ')
         self.extend('c','ჩ')
 
-    def extend(self, a, b):
-        tmp = list(self.keymapkbd[ord(a)])
-        tmp.append(ord(u(b)))
-        #print str(tmp)
-        self.keymapkbd[ord(a)] = tuple(tmp)
+
+  ### no list. append if not already in list
+    def append(self, dest, value):
+        #print "dest = " + str(dest)
+        #print "type of value = " + str(type(value))
+        #print "value = " + str(value)
+        intvalue = None
+        if type(value) is unicode:
+            intvalue = ord(value)
+        if type(value) is str:
+            intvalue = ord(u(value))
+        elif type(value) is int:
+            intvalue = value
+        else: return
+
+        if intvalue not in dest:
+            dest.append(intvalue)
+
+    def extend(self, key_p, value):
+        #print "extend :" + str(key_p) + " " + str(value)
+        if type(key_p) is str:
+            key = ord(u(key_p))
+        elif type(key_p) is int:
+            key = key_p
+        else:
+            return
+        if key not in self.keymapkbd:
+            self.keymapkbd[key] = tuple([])
+        tmp = list(self.keymapkbd[key])
+        #print "tmp = " + str(tmp)
+        #print "type of value= " + str(type(value))
+        if type(value) is list:
+            for v in value:
+                self.append(tmp, v)
+        else:
+            self.append(tmp, value)
+        self.keymapkbd[key] = tuple(tmp)
 
     # # #
     def getDefaultConfig(self):
         cfg = geoinput.getDefaultConfig(self)
-        cfg['keymapKbdExt'] = {}
-        #cfg['inputmode'] =  0
+        cfg['keymapKbdExt'] = dict()
         return cfg
 
     # # #
     def configLoaded(self):
         geoinput.configLoaded(self)
         try:
-            if self.c('keymapKbdExt') is not None:
-                d = {}
+            keymapKbdExt = self.c('keymapKbdExt')
+            if keymapKbdExt is not None and type(keymapKbdExt) is dict:
                 for key,value in self.config['keymapKbdExt'].items():
-                    d[ord(key)] = ord(value.decode('utf-8'))
-                    #for key, value in d.items():
-                        #if key not in self.number_keys:
-                            #self.number_keys[key] = value
+                    self.extend(key, value)
         except:
             self.printStackTrace()
 
