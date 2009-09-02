@@ -31,11 +31,43 @@ class geoinpute61(geoinputbase):
     def __init__(self):
         geoinputbase.__init__(self)
 
-    def extend(self, a, b):
-        tmp = list(self.keymapkbd[ord(a)])
-        tmp.append(ord(u(b)))
-        #print str(tmp)
-        self.keymapkbd[ord(a)] = tuple(tmp)
+
+    ### no list. append if not already in list
+    def append(self, dest, value):
+        #print "dest = " + str(dest)
+        #print "type of value = " + str(type(value))
+        #print "value = " + str(value)
+        intvalue = None
+        if type(value) is unicode:
+            intvalue = ord(value)
+        if type(value) is str:
+            intvalue = ord(u(value))
+        elif type(value) is int:
+            intvalue = value
+        else: return
+
+        if intvalue not in dest:
+            dest.append(intvalue)
+
+    def extend(self, key_p, value):
+        #print "extend :" + str(key_p) + " " + str(value)
+        if type(key_p) is str:
+            key = ord(u(key_p))
+        elif type(key_p) is int:
+            key = key_p
+        else:
+            return
+        if key not in self.keymapkbd:
+            self.keymapkbd[key] = tuple([])
+        tmp = list(self.keymapkbd[key])
+        #print "tmp = " + str(tmp)
+        #print "type of value= " + str(type(value))
+        if type(value) is list:
+            for v in value:
+                self.append(tmp, v)
+        else:
+            self.append(tmp, value)
+        self.keymapkbd[key] = tuple(tmp)
 
     def init(self):
         geoinputbase.init(self)
@@ -47,43 +79,22 @@ class geoinpute61(geoinputbase):
         self.switcherKey = 17
         for i in range(0,len("a85de7zTikl09opJ1s2*4qR3SCcZwWx#6")):
             self.keymapkbd[ord("a85de7zTikl09opJ1s2*4qR3SCcZwWx#6"[i])] = tuple([i + 4304])
-        self.extend('s','შ')
-        self.extend('w','ჭ')
-
-        self.extend('1','ღ')
-        self.extend('1','1')
-        self.extend('2','თ')
-        self.extend('2','2')
+        self.extend('s',u('შ'))
+        self.extend('w',u('ჭ'))
+        self.extend('1',['ღ','1'])
+        self.extend('2',['თ','2'])
         self.extend('3','3')
         self.extend('*','*')
         self.extend('4','4')
         self.extend('5','5')
         self.extend('6','6')
-        self.extend('#','ჟ')
-        self.extend('#','#')
+        self.extend('#', ['ჟ','#'])
         self.extend('7','7')
         self.extend('8','8')
         self.extend('9','9')
         self.extend('0','0')
         self.extend('z','ძ')
-        self.extend('c','ჩ')
-
-        # self.number_keys = {
-        #         'r':'1', 'R':'1', 't':'2','T':'2', 'y':'3',
-        #         'u':'*','f':'4','g':'5','h':'6','j':'#',
-        #         'v':'7', 'b':'8','n':'9','m':'0'
-        #}
-
-        # number_keys2 = {}
-        # for key,value in self.number_keys.items():
-        #     number_keys2[ord(key)] = ord(value.decode('utf-8'))
-        # self.number_keys = number_keys2
-        # self.number_keys2 = None
-        # self.number_keys_home_ignore =  self.number_keys.keys()
-        #self.number_keys_home_ignore = [ord('r'), ord('R'), ord('t'), ord('T'), ord('y'), ord('u'), ord('f'), ord('g'), ord('h'), ord('j'), ord('v'), ord('b'), ord('n'), ord('m')]
-        #self.number_keys_home_ignore = [ord('2'), ord('R'), ord('t'), ord('T'), ord('y'), ord('u'), ord('f'), ord('g'), ord('h'), ord('j'), ord('v'), ord('b'), ord('n'), ord('m')]
-
-
+        self.extend('c',['ჩ','+'])
 
     # # #
     def getDefaultConfig(self):
@@ -97,13 +108,11 @@ class geoinpute61(geoinputbase):
     def configLoaded(self):
         geoinputbase.configLoaded(self)
         try:
-            if self.c('keymapKbdExt') is not None:
-                d = {}
+            keymapKbdExt = self.c('keymapKbdExt')
+            if keymapKbdExt is not None and type(keymapKbdExt) is dict:
                 for key,value in self.config['keymapKbdExt'].items():
-                    d[ord(key)] = ord(value.decode('utf-8'))
-                    #for key, value in d.items():
-                        # if key not in self.number_keys:
-                        #     self.number_keys[key] = value
+                    self.extend(key, value)
+            self.log(str(self.keymapkbd))
         except:
             self.printStackTrace()
         try:
@@ -155,6 +164,7 @@ class geoinpute61(geoinputbase):
             simulate_key(sim_key, sim_key)
 
     def initMainCapturer(self):
+        print "called initMainCapturer"
         geoinputbase.initMainCapturer(self)
         self.mainCapturer = KeyCapturer(self.mainCallBack)
         #print str(self.keymapkbd.keys())

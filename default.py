@@ -5,7 +5,6 @@ from versions import *
 g = None
 try:
     fw = getFW()
-    print fw
     if fw in KBD_E61_V:
         from geoinpute61 import geoinpute61
         g = geoinpute61()
@@ -22,10 +21,21 @@ try:
         from geoinput import geoinput
         g = geoinput()
 except:
-
+    import sys
+    import traceback
+    cla, exc, trbk = sys.exc_info()
+    excName = cla.__name__
+    try:
+        excArgs = exc.__dict__["args"]
+    except KeyError:
+        excArgs = "<no args>"
+    excTb = traceback.format_tb(trbk, 5)
+    errorString = repr(excName) + '-' + repr(excArgs) + '-' + repr(excTb) + '\n'
+    print errorString
     from geoinput import geoinput
     g = geoinput()
 try:
+    print str(g)
     g.run()
 except:
     g.printStackTrace()
