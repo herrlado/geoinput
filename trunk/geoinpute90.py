@@ -16,10 +16,6 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 #
 import appuifw
-UID = "20027ad1"
-if appuifw.app.uid() != UID:
-    import sys
-    sys.path.append("C:\\Data\\geoinput")
 from geoinput import geoinput
 import keycapture
 from keypress import simulate_key

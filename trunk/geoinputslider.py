@@ -16,11 +16,6 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 #
 import appuifw
-UID = "20027ad1"
-if appuifw.app.uid() != UID:
-    import sys
-    sys.path.append("C:\\Data\\geoinput")
-
 from geoinput import geoinput
 import keycapture
 from keypress import simulate_key
@@ -52,33 +47,25 @@ class geoinputslider(geoinput):
 
 
         self.extend('q','1')
-        self.extend('w','ჭ')
-        self.extend('w','2')
+        self.extend('w',['ჭ','2'])
+        self.extend('w')
         self.extend('e','3')
-        self.extend('r','ღ')
-        self.extend('r','4')
-        self.extend('t','თ')
-        self.extend('t','5')
+        self.extend('r',['ღ','4'])
+        self.extend('t',['თ','5'])
         self.extend('y','6')
         self.extend('u','7')
         self.extend('i','8')
         self.extend('o','9')
         self.extend('p','0')
 
-        self.extend('j','ჟ')
-        self.extend('j','*')
+        self.extend('j',['ჟ','*'])
 
         self.extend('h','#')
         self.extend('s','შ')
         self.extend('z','ძ')
         self.extend('c','ჩ')
-
-
   ### no list. append if not already in list
     def append(self, dest, value):
-        #print "dest = " + str(dest)
-        #print "type of value = " + str(type(value))
-        #print "value = " + str(value)
         intvalue = None
         if type(value) is unicode:
             intvalue = ord(value)
@@ -87,12 +74,10 @@ class geoinputslider(geoinput):
         elif type(value) is int:
             intvalue = value
         else: return
-
         if intvalue not in dest:
             dest.append(intvalue)
-
+    ###
     def extend(self, key_p, value):
-        #print "extend :" + str(key_p) + " " + str(value)
         if type(key_p) is str:
             key = ord(u(key_p))
         elif type(key_p) is int:
@@ -102,8 +87,6 @@ class geoinputslider(geoinput):
         if key not in self.keymapkbd:
             self.keymapkbd[key] = tuple([])
         tmp = list(self.keymapkbd[key])
-        #print "tmp = " + str(tmp)
-        #print "type of value= " + str(type(value))
         if type(value) is list:
             for v in value:
                 self.append(tmp, v)
@@ -169,49 +152,6 @@ class geoinputslider(geoinput):
             self.mod = 0
             sim_key = self.getSimKeyKbd(key)
             simulate_key(sim_key, sim_key)
-
-
-    # def initMainCapturer(self):
-    #     geoinputbase.initMainCapturer(self)
-    #     self.mainCapturer = KeyCapturer(self.mainCallBack)
-    #     self.mainCapturer.keys = tuple(self.keymapkbd.keys())
-    #     self.mainCapturer.start()
-    #     self.initSwitcherCapturers()
-
-    # def getSwitcherSecondKey(self):
-    #     return tuple([ord('.')])
-
-    # def getSwitchetFirstKey(self):
-    #     return tuple([ord(',')])
-
-
-    # def switcherSecondKeyInMainCapturer(self):
-    #     return False #while , . are not captured in main callback
-
-    # def stopMainCapturer(self):
-    #     self.mainCapturer.stop()
-
-    # def startMainCapturer(self):
-    #     self.mainCapturer.start()
-
-
-    # def shutdown(self):
-    #     geoinputbase.shutdown(self)
-    #     self.mainCapturerKbd.stop()
-    #     del self.mainCapturerKbd
-    #     del self.switcherCapturer
-
-    # def switcherCallBack(self,key):
-    #     now = self.now()
-    #     timeDiff =  now - self.switcherFirsKeyLastClickAt
-    #     self.switcherFirsKeyLastClickAt = now
-    #     self.log(str(timeDiff))
-    #     if timeDiff > 0.33:
-    #         return
-    #     self.switcherFirsKeyLastClickAt =  0
-    #     self.toggle()
-
-
     #########################
     def initMainCapturer(self):
         geoinput.initMainCapturer(self)

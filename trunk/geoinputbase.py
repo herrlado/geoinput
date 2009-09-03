@@ -30,10 +30,11 @@ import sys
 import os
 from utils import *
 from versions import *
+from keypress import simulate_key
 
 UID = "20027ad1"
 
-APPVERSION = u'1.1.5'
+APPVERSION = u'1.2.7'
 
 APPNAME = u"geoinput"
 
