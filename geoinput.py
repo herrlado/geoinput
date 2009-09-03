@@ -15,16 +15,11 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 #
-import appuifw
-UID = "20027ad1"
-if appuifw.app.uid() != UID:
-    import sys
-    sys.path.append("C:\\Data\\geoinput")
 
 from geoinputbase import geoinputbase
-from geoinputbase import UID
+import appuifw
 from utils import u
-from key_codes import EKey0, EKey1, EKey2, EKey3, EKey4, EKey5, EKey6, EKey7, EKey8, EKey9, EKeyHash, EModifierCtrl, EKeyBackspace, EScancodeBackspace
+from key_codes import EKey0, EKey1, EKey2, EKey3, EKey4, EKey5, EKey6, EKey7, EKey8, EKey9, EKeyHash, EModifierCtrl, EKeyBackspace, EScancodeBackspace, EScancodeHash
 from keycapture import KeyCapturer
 from keypress import simulate_key
 
@@ -161,7 +156,9 @@ class geoinput(geoinputbase):
                 return False
             if not self.needToggle():
                 return False
-            return self.toggle()
+            retval = self.toggle()
+            simulate_key(EKeyHash, EScancodeHash)
+            return retval
 
     # # #
     def switcherFirstClickCallBack(self, key):

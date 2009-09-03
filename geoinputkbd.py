@@ -16,10 +16,6 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 #
 import appuifw
-UID = "20027ad1"
-if appuifw.app.uid() != UID:
-    import sys
-    sys.path.append("C:\\Data\\geoinput") #for ped
 from geoinputbase import geoinputbase
 import keycapture
 from keypress import simulate_key
@@ -29,7 +25,7 @@ from keycapture import KeyCapturer
 class geoinputkbd(geoinputbase):
     def __init__(self):
         geoinputbase.__init__(self)
-        
+
     def init(self):
         geoinputbase.init(self)
         self.mainCapturer = None

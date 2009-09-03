@@ -1,7 +1,4 @@
-# import sys
-# sys.path.append("C:\\Data\\geoinput")
 from versions import *
-
 g = None
 try:
     fw = getFW()
@@ -35,7 +32,6 @@ except:
     from geoinput import geoinput
     g = geoinput()
 try:
-    print str(g)
     g.run()
 except:
     g.printStackTrace()
