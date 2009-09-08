@@ -48,7 +48,6 @@ class geoinputslider(geoinput):
 
         self.extend('q','1')
         self.extend('w',['ჭ','2'])
-        self.extend('w')
         self.extend('e','3')
         self.extend('r',['ღ','4'])
         self.extend('t',['თ','5'])
