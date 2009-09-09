@@ -3,8 +3,8 @@ g = None
 try:
     fw = getFW()
     if fw in KBD_E61_V:
-        from geoinpute61 import geoinpute61
-        g = geoinpute61()
+        from geoinputkbd import geoinputkbd
+        g = geoinputkbd()
     elif fw in KBD_V:
         from geoinputkbd import geoinputkbd
         g = geoinputkbd()

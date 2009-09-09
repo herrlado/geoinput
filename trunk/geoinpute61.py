@@ -26,6 +26,7 @@ from utils import u
 class geoinpute61(geoinputbase):
     def __init__(self):
         geoinputbase.__init__(self)
+
     ### no list. append if not already in list
     def append(self, dest, value):
         intvalue = None
@@ -65,6 +66,12 @@ class geoinpute61(geoinputbase):
         self.keymapkbd = {}
         self.switcherFirsKeyLastClickAt = 0
         self.switcherKey = 17
+        self.needctrl = ["1","2","3","4","5","6","7","8","9","0","*","#","+","y","z"]
+        t = []
+        for i in self.needctrl:
+            t.append(ord(i))
+        self.needctrl = t
+        t = None
         for i in range(0,len("a85de7zTikl09opJ1s2*4qR3SCcZwWx#6")):
             self.keymapkbd[ord("a85de7zTikl09opJ1s2*4qR3SCcZwWx#6"[i])] = tuple([i + 4304])
         self.extend('s','შ')
@@ -99,7 +106,6 @@ class geoinpute61(geoinputbase):
             if keymapKbdExt is not None and type(keymapKbdExt) is dict:
                 for key,value in self.config['keymapKbdExt'].items():
                     self.extend(key, value)
-            self.log(str(self.keymapkbd))
         except:
             self.printStackTrace()
         try:
@@ -137,12 +143,13 @@ class geoinpute61(geoinputbase):
             sim_key = self.getSimKey(key)
             if sim_key == key :
                 self.mainCapturer.stop()
-                simulate_key(EKeyBackspace, EScancodeBackspace)
-                simulate_key(key, 0, EModifierCtrl)
-                self.mainCapturer.start()
-            else :
-                simulate_key(EKeyBackspace, EScancodeBackspace)
+            simulate_key(EKeyBackspace, EScancodeBackspace)
+            if sim_key in self.needctrl:
+                simulate_key(sim_key, 0, EModifierCtrl)
+            else:
                 simulate_key(sim_key, sim_key)
+            if sim_key == key:
+                self.mainCapturer.start()
             self.backspaceCapturer.start()
         else:
             self.mod = 0
