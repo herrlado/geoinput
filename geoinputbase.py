@@ -261,7 +261,7 @@ class geoinputbase(object):
         self.stopMainCapturer()
 
         items = appuifw.multi_selection_list(apps, style='checkbox', search_field =  1)
-
+        self.startMainCapturer()
         if len(items) == 0:
             return
         apps_to_add = []
