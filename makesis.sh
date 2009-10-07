@@ -9,8 +9,9 @@ mkdir -p sis
 cp -v default.py build/
 cp -v geoinputbase.py build/
 cp -v geoinput.py build/
-cp -v geoinputkbd.py build/
+cp -v geoinpute63.py build/
 cp -v geoinpute61.py build/
+cp -v geoinpute71.py build/
 cp -v geoinputslider.py build/
 cp -v geoinpute90.py build/
 cp -v versions.py build/

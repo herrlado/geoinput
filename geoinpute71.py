@@ -20,9 +20,11 @@ from geoinputbase import geoinputbase
 import keycapture
 from keypress import simulate_key
 from keycapture import KeyCapturer
-from utils import u
+from utils import u, conf
 from key_codes import EKeyBackspace, EScancodeBackspace, EModifierCtrl
-class geoinputkbd(geoinputbase):
+import e32
+
+class geoinpute71(geoinputbase):
     def __init__(self):
         geoinputbase.__init__(self)
 
@@ -68,7 +70,7 @@ class geoinputkbd(geoinputbase):
         self.keymapkbd = {}
         self.keymapkbdhs  = {}
         self.switcherFirsKeyLastClickAt = 0
-        self.switcherKey = 17
+        self.switcherKey =  ord(' ')
         self.needctrl = ["z","y"]
         t = []
         for i in self.needctrl:
@@ -105,26 +107,10 @@ class geoinputkbd(geoinputbase):
         self.extend('z','ძ')
         self.extend('c',['ჩ'])
 
-
-        # number_keys2 = {}
-        # for key,value in self.number_keys.items():
-        #     number_keys2[ord(key)] = ord(value.decode('utf-8'))
-        # self.number_keys = number_keys2
-        # self.number_keys2 = None
-        #self.number_keys_home_ignore =  self.number_keys.keys()a
-        #self.number_keys_home_ignore = [ord('r'), ord('R'), ord('t'), ord('T'), ord('y'), ord('u'), ord('f'), ord('g'), ord('h'), ord('j'), ord('v'), ord('b'), ord('n'), ord('m')]
-        #self.number_keys_home_ignore = [ord('2'), ord('R'), ord('t'), ord('T'), ord('y'), ord('u'), ord('f'), ord('g'), ord('h'), ord('j'), ord('v'), ord('b'), ord('n'), ord('m')]
-
-
-
-
-
     # # #
     def getDefaultConfig(self):
         cfg = geoinputbase.getDefaultConfig(self)
         cfg['keymapKbdExt'] = {}
-        cfg['inputmode'] =  0
-        cfg['switcherkey'] = chr(17 + 96) #q
         return cfg
     # # #
     def initKeymapkbdhs(self):
@@ -148,14 +134,6 @@ class geoinputkbd(geoinputbase):
         # # # init keys for home screen
         self.initKeymapkbdhs()
 
-        try:
-            char = self.config['switcherkey']
-            if char is None:
-                char = 'q'
-            self.switcherKey = ord(char.decode('utf-8')) - 96
-        except:
-            self.switcherKey = 17 #q
-            self.printStackTrace()
 
     def getKeymapkbd(self, key):
         if key not in self.keymapkbdhs:
@@ -200,52 +178,12 @@ class geoinputkbd(geoinputbase):
             sim_key = self.getSimKey(key)
             simulate_key(sim_key, sim_key)
 
-    # def mainCallBack(self, key):
-    #     if key not in self.keymapkbd:
-    #         return
-    #     if key not in self.number_keys:
-    #         sim_key = self.keymapkbd[key]
-    #         simulate_key(sim_key, sim_key)
-    #         return
-    #     reverse = self.isExceptionInFg() #False
-    #     if key not in self.number_keys_home_ignore:
-    #         reverse = False
-    #     self.checkTime()
-    #     if self.lastKey == key :
-    #         self.backspaceCapturer.stop() # we must stop backspace, because the next call is a "dummy backSpace" to remove a digit in-place
-    #         simulate_key(8,8)
-    #         if reverse:
-    #             sim_key = self.keymapkbd[key]
-    #         else:
-    #             sim_key = self.number_keys[key]
-    #         simulate_key(sim_key, sim_key)
-    #         self.backspaceCapturer.start() # enable backspace forwarding
-    #         self.lastKey = 0
-    #     else:
-    #         if reverse:
-    #             sim_key = self.number_keys[key]
-    #         else:
-    #             sim_key = self.keymapkbd[key]
-    #         simulate_key(sim_key, sim_key)
-    #         self.lastKey = key
-
-
     def initMainCapturer(self):
         geoinputbase.initMainCapturer(self)
         self.mainCapturer = KeyCapturer(self.mainCallBack)
         self.mainCapturer.keys = tuple(self.keymapkbd.keys())
         self.mainCapturer.start()
         self.initSwitcherCapturers()
-
-    # def getSwitcherSecondKey(self):
-    #     return tuple([ord('.')])
-
-    # def getSwitchetFirstKey(self):
-    #     return tuple([ord(',')])
-
-
-    # def switcherSecondKeyInMainCapturer(self):
-    #     return False #while , . are not captured in main callback
 
     def stopMainCapturer(self):
         self.mainCapturer.stop()
@@ -260,23 +198,40 @@ class geoinputkbd(geoinputbase):
         self.switcherCapturer.stop()#####
         del self.mainCapturer
         del self.switcherCapturer #####
-    # def shutdown(self):
-    #     geoinputbase.shutdown(self)
-    #     del self.mainCapturer
-    #     del self.switcherCapturer
 
-    def switcherCallBack(self,key):#####
-        # now = self.now()
-        # timeDiff =  now - self.switcherFirsKeyLastClickAt
-        # self.switcherFirsKeyLastClickAt = now
-        # if timeDiff > 0.33:
-        #     return
+
+    def switcherCallBack(self, key):
         if key == self.switcherKey:
+            now = self.now()
+            timeDiff =  now - self.switcherFirsKeyLastClickAt
+            self.switcherFirsKeyLastClickAt = now
+            if timeDiff > 0.33:
+                return
+            self.switcherFirsKeyLastClickAt =  0
             self.toggle()
-
 
     def initSwitcherCapturers(self):#####
         self.switcherCapturer = KeyCapturer(self.switcherCallBack)
         self.switcherCapturer.keys = tuple([self.switcherKey])
         self.switcherCapturer.forwarding = 1
         self.switcherCapturer.start()
+
+    def toggle(self):
+        simulate_key(8,8)
+        if self.currentLang == u'ka':
+            self.currentLang = u'default'
+            self.stop()
+            if  self.c('noteSwitch') == 0:
+                return True
+            conf(u("default"))
+            e32.ao_sleep(0.2)
+            #simulate_key(EKeyHash, EScancodeHash)
+        else:
+            self.start()
+            self.currentLang = u'ka'
+            if  self.c('noteSwitch') == 0:
+                return True
+            conf(u('ქართული'))
+            e32.ao_sleep(0.2)
+            #simulate_key(EKeyHash, EScancodeHash)
+            return True

@@ -5,7 +5,10 @@ try:
     if fw in KBD_E61_V:
         from geoinpute61 import geoinpute61
         g = geoinpute61()
-    elif fw in KBD_V:
+    if fw in KBD_E71_V:
+        from geoinpute71 import geoinpute71
+        g = geoinpute71()
+    elif fw in KBD_E63_V:
         from geoinputkbd import geoinputkbd
         g = geoinputkbd()
     elif fw in DBL_KBD_V:
